@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="preclose">
+  <rect width="32" height="32" rx="7" fill="#0A0D18"/>
+  <!-- periwinkle baseline gliding to a far zero -->
+  <path d="M5 8 C 12 9, 18 15, 27 24" fill="none" stroke="#8b96c9" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+  <!-- amber curve diving to an early closure -->
+  <path d="M5 8 C 9 11, 12 20, 18 24" fill="none" stroke="#ffb648" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- closure tick -->
+  <line x1="18" y1="20" x2="18" y2="27" stroke="#ffb648" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="18" cy="24" r="1.9" fill="#ffb648"/>
+</svg>

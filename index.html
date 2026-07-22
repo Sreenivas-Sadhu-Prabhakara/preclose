@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'">
+  <title>preclose — home loan prepayment calculator with full amortization schedule</title>
+  <meta name="description" content="Home loan prepayment calculator: see the full month-by-month EMI amortization schedule, total interest saved, new closure date, and an honest reduce-EMI vs reduce-tenure verdict. Private, offline, on your device.">
+  <meta name="color-scheme" content="dark light">
+  <link rel="canonical" href="https://sreenivas-sadhu-prabhakara.github.io/preclose/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Sreenivas Sadhu Prabhakara">
+  <meta name="keywords" content="home loan prepayment calculator, EMI amortization schedule, reduce EMI vs reduce tenure, part payment calculator, loan prepayment interest saved, floating rate loan calculator, amortization table India">
+  <meta name="theme-color" content="#0A0D18" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f4fb" media="(prefers-color-scheme: light)">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="preclose">
+  <meta property="og:title" content="preclose — home loan prepayment calculator with full amortization schedule">
+  <meta property="og:description" content="See exactly what a prepayment does to your loan — interest saved, months erased, schedule rewritten, reduce-EMI vs reduce-tenure verdict. All on your device.">
+  <meta property="og:url" content="https://sreenivas-sadhu-prabhakara.github.io/preclose/">
+  <meta property="og:locale" content="en_IN">
+  <meta property="og:image" content="https://sreenivas-sadhu-prabhakara.github.io/preclose/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="preclose — twin burn-down curves diving to an early loan closure">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="preclose — home loan prepayment calculator with full amortization schedule">
+  <meta name="twitter:description" content="See exactly what a prepayment does to your loan — interest saved, months erased, reduce-EMI vs reduce-tenure verdict. Private, offline.">
+  <meta name="twitter:image" content="https://sreenivas-sadhu-prabhakara.github.io/preclose/og-image.png">
+  <meta name="twitter:image:alt" content="preclose — twin burn-down curves diving to an early loan closure">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- Structured data (data block; not affected by script-src) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "preclose",
+    "description": "A home loan prepayment calculator that rewrites your full month-by-month EMI amortization schedule, shows total interest saved and the new closure date, and gives an honest reduce-EMI vs reduce-tenure verdict. Runs entirely on your device.",
+    "url": "https://sreenivas-sadhu-prabhakara.github.io/preclose/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any (modern web browser)",
+    "browserRequirements": "Requires a modern web browser with JavaScript enabled.",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+    "license": "https://opensource.org/licenses/MIT",
+    "author": { "@type": "Person", "name": "Sreenivas Sadhu Prabhakara" },
+    "softwareVersion": "0.1.0",
+    "featureList": [
+      "Full month-by-month EMI amortization schedule",
+      "One-time and recurring prepayment events",
+      "Reduce-EMI vs reduce-tenure side-by-side verdict",
+      "Total interest saved and new closure date",
+      "Twin burn-down balance chart",
+      "CSV export and print-to-PDF handoff",
+      "Runs 100% offline on your device"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is it better to reduce EMI or reduce tenure when I prepay my home loan?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For the same prepayment, reducing the tenure almost always saves more interest than reducing the EMI, because you keep paying the same amount and close the loan earlier. preclose computes both side by side for your exact loan and states which saves more, and by how much, so you can decide before you visit the branch."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is the EMI amortization schedule calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "EMI uses the closed-form annuity formula P·i·(1+i)^n / ((1+i)^n − 1) with i = annual rate ÷ 12. Each month, interest is charged on the opening balance (monthly-rest reducing balance), the rest of the EMI reduces principal, and any prepayment is applied on top. preclose computes every rupee in integer paise and reconciles the final row to close at exactly zero."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does preclose send my loan details anywhere?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The page's own Content-Security-Policy sets connect-src to 'none', so the browser itself blocks every network request — the app cannot transmit your loan details even if it tried. Everything is computed and saved (via localStorage) only on your device. Clearing site data deletes saved scenarios, so export the CSV to keep records."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#results">Skip to my results</a>
+
+  <!-- ============ HERO + CONTROLS ============ -->
+  <header class="hero" id="top">
+    <div class="hero__inner">
+      <p class="eyebrow">Prepayment &middot; amortization &middot; offline</p>
+      <h1 class="hero__title">Home Loan Prepayment Calculator<span class="hero__accent"> &mdash; full EMI amortization schedule, reduce&nbsp;EMI vs reduce&nbsp;tenure</span></h1>
+      <p class="hero__lede">
+        See exactly what a prepayment does to a reducing-balance loan &mdash; the month-by-month
+        schedule rewritten, total interest saved, the new closure date, and an honest side-by-side
+        of the two options every bank offers. Works for car and personal loans too.
+        No accounts, no network &mdash; everything stays on this device.
+      </p>
+
+      <form class="controls" id="controls" novalidate>
+        <fieldset class="panel">
+          <legend class="panel__legend">Loan</legend>
+          <div class="grid">
+            <div class="field">
+              <label for="principal">Loan amount (&#8377;)</label>
+              <input type="number" id="principal" name="principal" min="10000" max="1000000000" step="1000" value="5000000" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label for="rate">Annual interest rate (%)</label>
+              <input type="number" id="rate" name="rate" min="0" max="36" step="0.01" value="8.5" inputmode="decimal">
+            </div>
+            <div class="field field--split">
+              <label for="years">Tenure</label>
+              <div class="split">
+                <span class="split__cell"><input type="number" id="years" name="years" min="0" max="40" step="1" value="20" inputmode="numeric"><span class="split__unit">yr</span></span>
+                <span class="split__cell"><input type="number" id="months" name="months" min="0" max="11" step="1" value="0" inputmode="numeric"><span class="split__unit">mo</span></span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="startMonth">First EMI month</label>
+              <input type="month" id="startMonth" name="startMonth">
+            </div>
+          </div>
+          <div class="grouping" role="radiogroup" aria-label="Number grouping">
+            <span class="grouping__label">Grouping</span>
+            <label class="seg"><input type="radio" name="grouping" value="in" checked><span>Indian (lakh/crore)</span></label>
+            <label class="seg"><input type="radio" name="grouping" value="plain"><span>Plain (1,000s)</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend class="panel__legend">Prepayments</legend>
+          <p class="panel__hint">Add a one-time lump sum or a recurring amount (e.g. an annual bonus). Each event may carry a prepayment charge, netted out of the savings.</p>
+          <div class="events" id="prepayEvents" aria-live="polite"></div>
+          <button type="button" class="btn btn--ghost" id="addPrepay">+ Add prepayment</button>
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend class="panel__legend">Rate changes <span class="tag tag--beta">beta</span></legend>
+          <p class="panel__hint">Floating-rate repricing at a chosen month. Choose whether the bank keeps the EMI (tenure stretches) or re-derives the EMI for the remaining tenure. <span class="muted">Combinatorial edges are still being hardened &mdash; treat results as indicative.</span></p>
+          <div class="events" id="rateEvents" aria-live="polite"></div>
+          <button type="button" class="btn btn--ghost" id="addRate">+ Add rate change</button>
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend class="panel__legend">Strategy shown as primary</legend>
+          <div class="segmented" role="radiogroup" aria-label="Primary strategy">
+            <label class="seg"><input type="radio" name="strategy" value="tenure" checked><span>Reduce tenure</span></label>
+            <label class="seg"><input type="radio" name="strategy" value="emi"><span>Reduce EMI</span></label>
+          </div>
+          <p class="panel__hint">Both are always computed and compared below; this only picks which one the schedule table shows.</p>
+        </fieldset>
+
+        <div class="controls__action">
+          <div class="scenario">
+            <label for="scenarioName" class="scenario__label">Scenario</label>
+            <input type="text" id="scenarioName" name="scenarioName" placeholder="e.g. bonus in month 12" maxlength="60">
+            <button type="button" class="btn btn--ghost" id="saveScenario">Save</button>
+            <select id="scenarioSelect" aria-label="Saved scenarios"><option value="">Load saved…</option></select>
+            <button type="button" class="btn btn--ghost" id="dupScenario" title="Duplicate the loaded scenario">Duplicate</button>
+          </div>
+          <span class="controls__note">Everything stays on this device.</span>
+        </div>
+      </form>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ VERDICT ============ -->
+    <section class="results" id="results" aria-labelledby="verdictHeading">
+      <div class="results__inner">
+        <div class="results__head">
+          <h2 class="results__heading" id="verdictHeading">The verdict</h2>
+          <div class="results__actions">
+            <button type="button" class="btn btn--ghost" id="printBtn">Print</button>
+            <button type="button" class="btn btn--ghost" id="csvBtn">Export CSV</button>
+            <button type="button" class="btn btn--ghost" id="themeBtn" aria-pressed="false">Toggle theme</button>
+          </div>
+        </div>
+
+        <p class="baseline-line" id="baselineLine" aria-live="polite"></p>
+
+        <div class="verdict" id="verdict" aria-live="polite"></div>
+
+        <!-- ============ BURN-DOWN CHART (the motif) ============ -->
+        <figure class="chart">
+          <figcaption class="chart__cap">
+            <span class="legend"><span class="swatch swatch--base"></span> Baseline (do nothing)</span>
+            <span class="legend"><span class="swatch swatch--pre"></span> With prepayments</span>
+            <span class="legend"><span class="swatch swatch--erased"></span> Months erased</span>
+          </figcaption>
+          <div class="chart__frame">
+            <svg id="chart" viewBox="0 0 800 320" role="img" aria-labelledby="chartTitle chartDesc" preserveAspectRatio="none">
+              <title id="chartTitle">Outstanding-balance burn-down</title>
+              <desc id="chartDesc">Two curves showing the outstanding loan balance over time: a baseline curve and a with-prepayments curve that reaches zero earlier.</desc>
+            </svg>
+          </div>
+        </figure>
+
+        <!-- ============ HONEST-MODEL NOTE (on-screen, not fine print) ============ -->
+        <aside class="modelnote" id="modelnote">
+          <h3 class="modelnote__title">How to read these numbers</h3>
+          <ul class="modelnote__list">
+            <li><strong>Monthly-rest model.</strong> preclose uses the standard monthly reducing-balance method. Banks use <em>daily</em>-reducing balances and broken-period interest on the first partial month, so figures may differ from your statement by small (typically rupee-level, not thousand-rupee-level) amounts.</li>
+            <li><strong>On-time assumption.</strong> Every EMI is assumed paid on its due date; missed payments, late fees, and penal interest are not modeled.</li>
+            <li><strong>Prepayment charges are whatever you enter.</strong> <span id="rbiNote"></span></li>
+          </ul>
+        </aside>
+
+        <!-- ============ SCHEDULE ============ -->
+        <div class="schedule" id="schedule" aria-label="Rewritten amortization schedule"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <p class="foot__disclaimer">
+        <strong>Not financial advice.</strong> preclose is an informational calculator using a
+        standard monthly-rest reducing-balance model. Results may differ from your lender's daily-reducing
+        figures. Verify any prepayment decision against your lender's official statement and terms before acting.
+      </p>
+      <p class="foot__meta">
+        <span>Monthly-rest model</span><span class="foot__dot">&middot;</span>
+        <span>Works 100% offline</span><span class="foot__dot">&middot;</span>
+        <span>No network, no accounts</span><span class="foot__dot">&middot;</span>
+        <span>MIT&nbsp;License</span><span class="foot__dot">&middot;</span>
+        <span>&copy; 2026 Sreenivas&nbsp;Sadhu&nbsp;Prabhakara</span>
+      </p>
+    </div>
+  </footer>
+
+  <script src="data/loan.js" defer></script>
+  <script src="data/format.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

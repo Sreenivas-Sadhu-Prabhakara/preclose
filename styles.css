@@ -34,12 +34,12 @@
   --line:      #d3d5ec;
   --ink:       #1d2447;
   --muted:     #545d86;
-  --amber:     #b8730a;   /* deepened for AA on light surfaces */
+  --amber:     #8f5406;   /* deepened for AA (≥4.5:1) as text on light surfaces */
   --amber-ink: #ffffff;
   --peri:      #5a63a0;   /* darkened periwinkle for AA text/line on light */
-  --amber-dim: rgba(184, 115, 10, 0.12);
+  --amber-dim: rgba(143, 84, 6, 0.11);
   --peri-dim:  rgba(90, 99, 160, 0.14);
-  --erased:    rgba(184, 115, 10, 0.14);
+  --erased:    rgba(143, 84, 6, 0.13);
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]):not(.dark) {
@@ -49,12 +49,12 @@
     --line:      #d3d5ec;
     --ink:       #1d2447;
     --muted:     #545d86;
-    --amber:     #b8730a;
+    --amber:     #8f5406;
     --amber-ink: #ffffff;
     --peri:      #5a63a0;
-    --amber-dim: rgba(184, 115, 10, 0.12);
+    --amber-dim: rgba(143, 84, 6, 0.11);
     --peri-dim:  rgba(90, 99, 160, 0.14);
-    --erased:    rgba(184, 115, 10, 0.14);
+    --erased:    rgba(143, 84, 6, 0.13);
   }
 }
 
